@@ -1,33 +1,41 @@
 using System.Collections.Generic;
-using AnimalWorldRoot.Animal;
-using AnimalWorldRoot.Factory;
-using AnimalWorldRoot.Spawner;
-using AnimalWorldRoot.Statistics;
+using AnimalWorld.Animal;
+using AnimalWorld.Factory;
+using AnimalWorld.Spawner;
+using AnimalWorld.Statistics;
 using Modules.ScreenBounds;
 using UnityEngine;
 
-namespace AnimalWorldRoot
+namespace AnimalWorld
 {
-    public class AnimalWorldRoot
+    public class Root
     {
+        public class Context
+        {
+            public AnimalsConfig.AnimalsConfig animalsConfig;
+            public Transform animalsRoot;
+            public IScreenBounds screenBounds;
+            public float spawnIntervalMin;
+            public float spawnIntervalMax;
+        }
+
         public IAnimalWorldStats animalWorldStats { get; }
 
         private readonly IAnimalSpawner _animalSpawner;
         private readonly List<IAnimal> _animals;
 
-        public AnimalWorldRoot(AnimalsConfig.AnimalsConfig animalsConfig, Transform animalsRoot,
-            IScreenBounds screenBounds, float spawnIntervalMin, float spawnIntervalMax)
+        public Root(Context context)
         {
             _animals = new List<IAnimal>();
 
-            IAnimalFactory animalFactory = new AnimalFactory(animalsRoot, screenBounds);
+            IAnimalFactory animalFactory = new AnimalFactory(context.animalsRoot, context.screenBounds);
 
             _animalSpawner = new AnimalSpawner(
                 animalFactory,
-                animalsConfig,
+                context.animalsConfig,
                 _animals,
-                spawnIntervalMin,
-                spawnIntervalMax
+                context.spawnIntervalMin,
+                context.spawnIntervalMax
             );
 
             animalWorldStats = new AnimalWorldStats(_animalSpawner);
@@ -42,7 +50,7 @@ namespace AnimalWorldRoot
         {
             foreach (IAnimal animal in _animals)
             {
-                animal.Tick(fixedDeltaTime);
+                animal.MoveLifecycle(fixedDeltaTime);
             }
         }
     }

@@ -1,7 +1,7 @@
 using System;
-using AnimalWorldRoot.Animal;
+using AnimalWorld.Animal;
 
-namespace AnimalWorldRoot.Spawner
+namespace AnimalWorld.Spawner
 {
     public interface IAnimalSpawner
     {

@@ -1,7 +1,7 @@
-using AnimalWorldRoot.Animal;
-using AnimalWorldRoot.AnimalsConfig;
+using AnimalWorld.Animal;
+using AnimalWorld.AnimalsConfig;
 
-namespace AnimalWorldRoot.Factory
+namespace AnimalWorld.Factory
 {
     public interface IAnimalFactory
     {

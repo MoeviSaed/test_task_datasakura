@@ -1,4 +1,4 @@
-using AnimalWorldRoot.Statistics;
+using AnimalWorld.Statistics;
 using TMPro;
 using UnityEngine;
 
@@ -34,10 +34,9 @@ namespace UIRoot.Statistics
                 return;
             }
 
-            _text.text = string.Empty;
-
-            _text.text += $"Prey dead: {_stats.DeadPreyCount}\n";
-            _text.text += $"Predators dead: {_stats.DeadPredatorCount}\n";
+            _text.SetText("Prey dead: {0}\nPredators dead: {1}", 
+                _stats.DeadPreyCount, 
+                _stats.DeadPredatorCount);
         }
     }
 }

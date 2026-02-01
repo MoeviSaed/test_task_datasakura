@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
-using AnimalWorldRoot.Animal;
-using AnimalWorldRoot.AnimalsConfig;
-using AnimalWorldRoot.Factory;
+using AnimalWorld.Animal;
+using AnimalWorld.AnimalsConfig;
+using AnimalWorld.Factory;
 using Random = UnityEngine.Random;
 
-namespace AnimalWorldRoot.Spawner
+namespace AnimalWorld.Spawner
 {
     public class AnimalSpawner : IAnimalSpawner
     {

@@ -1,4 +1,4 @@
-using AnimalWorldRoot.Statistics;
+using AnimalWorld.Statistics;
 
 namespace UIRoot.Statistics
 {

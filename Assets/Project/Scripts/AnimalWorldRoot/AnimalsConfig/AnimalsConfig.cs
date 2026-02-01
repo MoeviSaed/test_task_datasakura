@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace AnimalWorldRoot.AnimalsConfig
+namespace AnimalWorld.AnimalsConfig
 {
     [CreateAssetMenu(fileName = "AnimalsBank", menuName = "Configs/Animals")]
     public class AnimalsConfig : ScriptableObject

@@ -1,10 +1,9 @@
 using System;
-using System.Collections.Generic;
-using AnimalWorldRoot.Animal;
-using AnimalWorldRoot.AnimalsConfig;
-using AnimalWorldRoot.Spawner;
+using AnimalWorld.Animal;
+using AnimalWorld.AnimalsConfig;
+using AnimalWorld.Spawner;
 
-namespace AnimalWorldRoot.Statistics
+namespace AnimalWorld.Statistics
 {
     public class AnimalWorldStats : IAnimalWorldStats
     {
@@ -12,11 +11,7 @@ namespace AnimalWorldRoot.Statistics
 
         public int DeadPreyCount => _deadPrey;
         public int DeadPredatorCount => _deadPredator;
-
-        public IReadOnlyDictionary<AnimalType, int> countByType => _countByType;
         private readonly IAnimalSpawner _animalSpawner;
-
-        private readonly Dictionary<AnimalType, int> _countByType = new();
 
         private int _deadPrey;
         private int _deadPredator;
@@ -27,7 +22,7 @@ namespace AnimalWorldRoot.Statistics
             _animalSpawner.OnAnimalSpawned += RegisterOnAnimal;
         }
 
-        public void RegisterOnAnimal(IAnimal animal)
+        private void RegisterOnAnimal(IAnimal animal)
         {
             animal.OnDied += OnAnimalDied;
         }
@@ -43,6 +38,9 @@ namespace AnimalWorldRoot.Statistics
                 case AnimalType.Predator:
                     _deadPredator++;
                     break;
+
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
 
             animal.OnDied -= OnAnimalDied;

@@ -1,21 +1,21 @@
-using AnimalWorldRoot.Animal;
+using AnimalWorld.Animal;
 using Modules.ScreenBounds;
 using UnityEngine;
 
-namespace AnimalWorldRoot.MovementStrategy
+namespace AnimalWorld.MovementStrategy
 {
     public class JumpMovement : IMovementStrategy
     {
-        private readonly IMovementView _view;
+        private readonly IMovementView _movementView;
         private readonly float _jumpForce;
         private readonly float _interval;
         private readonly IScreenBounds _screenBounds;
 
         private float _timer;
 
-        public JumpMovement(IMovementView view, float jumpForce, float interval, IScreenBounds screenBounds)
+        public JumpMovement(IMovementView movementView, float jumpForce, float interval, IScreenBounds screenBounds)
         {
-            _view = view;
+            _movementView = movementView;
             _jumpForce = jumpForce;
             _interval = interval;
             _screenBounds = screenBounds;
@@ -33,20 +33,20 @@ namespace AnimalWorldRoot.MovementStrategy
             _timer = _interval;
 
             Vector3 dir = GetJumpDirection();
-            _view.AddForce(dir * _jumpForce);
+            _movementView.rigidbody.AddForce(dir * _jumpForce, ForceMode.Impulse);
         }
 
         private Vector3 GetJumpDirection()
         {
-            if (_screenBounds.IsOutOfBounds(_view.rigidbodyPosition))
+            if (_screenBounds.IsOutOfBounds(_movementView.rigidbody.position))
             {
-                Vector3 returnDir = _screenBounds.GetReturnDirection(_view.rigidbodyPosition);
+                Vector3 returnDir = _screenBounds.GetReturnDirection(_movementView.rigidbody.position);
 
-                return new Vector3(returnDir.x, y: 1f, returnDir.z).normalized;
+                return new Vector3(returnDir.x, y: _jumpForce, returnDir.z).normalized;
             }
 
             Vector3 dir = Random.insideUnitSphere;
-            dir.y = 5f;
+            dir.y = _jumpForce;
 
             return dir.normalized;
         }

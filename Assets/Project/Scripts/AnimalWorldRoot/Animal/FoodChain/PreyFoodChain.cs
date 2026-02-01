@@ -1,25 +1,21 @@
-using AnimalWorldRoot.Animal;
-using AnimalWorldRoot.AnimalsConfig;
+using AnimalWorld.Animal;
+using AnimalWorld.AnimalsConfig;
+using AnimalWorld.Resolver;
 
-namespace AnimalWorldRoot.FoodChain
+namespace AnimalWorld.FoodChain
 {
     public class PreyFoodChain : IFoodChainBehaviour
     {
-        public FoodChainResult OnCollide(IAnimal self, IAnimal other)
+        public ICollisionCommand Resolve(IAnimal self, IAnimal other)
         {
-            if (other == null)
-            {
-                return FoodChainResult.Ignore;
-            }
-
             if (other.type == AnimalType.Predator)
             {
-                return FoodChainResult.Die;
+                return new DieCommand();
             }
 
             return other.type == AnimalType.Prey
-                ? FoodChainResult.FlyApart
-                : FoodChainResult.Ignore;
+                ? new FlyApartCommand(3) // TODO: Config
+                : IgnoreCommand.Instance;
         }
     }
 }

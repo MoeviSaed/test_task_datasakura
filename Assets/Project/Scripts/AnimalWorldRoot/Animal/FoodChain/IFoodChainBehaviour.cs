@@ -1,17 +1,10 @@
-using AnimalWorldRoot.Animal;
+using AnimalWorld.Animal;
+using AnimalWorld.Resolver;
 
-namespace AnimalWorldRoot.FoodChain
+namespace AnimalWorld.FoodChain
 {
     public interface IFoodChainBehaviour
     {
-        FoodChainResult OnCollide(IAnimal self, IAnimal other);
-    }
-
-    public enum FoodChainResult
-    {
-        Ignore,
-        FlyApart,
-        Die,
-        EatOther
+        ICollisionCommand Resolve(IAnimal self, IAnimal other);
     }
 }

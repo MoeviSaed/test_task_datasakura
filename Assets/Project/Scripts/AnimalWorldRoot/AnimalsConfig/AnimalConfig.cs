@@ -1,12 +1,12 @@
-using AnimalWorldRoot.Animal;
+using AnimalWorld.Animal;
 using UnityEngine;
 
-namespace AnimalWorldRoot.AnimalsConfig
+namespace AnimalWorld.AnimalsConfig
 {
     [CreateAssetMenu(fileName = "Animal", menuName = "Configs/Animal")]
     public class AnimalConfig : ScriptableObject
     {
-        public AnimalView animalPrefab;
+        public AnimalMono animalPrefab;
         public AnimalType animalType;
         public MovementType movementType;
 

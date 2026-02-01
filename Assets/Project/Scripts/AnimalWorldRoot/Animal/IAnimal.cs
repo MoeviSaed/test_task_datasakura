@@ -1,15 +1,15 @@
 using System;
-using AnimalWorldRoot.AnimalsConfig;
-using AnimalWorldRoot.FoodChain;
+using AnimalWorld.AnimalsConfig;
+using AnimalWorld.FoodChain;
 
-namespace AnimalWorldRoot.Animal
+namespace AnimalWorld.Animal
 {
     public interface IAnimal
     {
         event Action<IAnimal> OnDied;
         AnimalType type { get; }
         IFoodChainBehaviour foodChain { get; }
-        void Tick(float deltaTime);
+        void MoveLifecycle(float deltaTime);
         void Kill();
     }
 }

@@ -1,4 +1,4 @@
-namespace AnimalWorldRoot.MovementStrategy
+namespace AnimalWorld.MovementStrategy
 {
     public interface IMovementStrategy
     {

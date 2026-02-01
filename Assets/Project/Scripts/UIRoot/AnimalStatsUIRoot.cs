@@ -1,15 +1,15 @@
-using AnimalWorldRoot.Statistics;
+using AnimalWorld.Statistics;
 
 namespace UIRoot.Statistics
 {
     public class AnimalStatsUIRoot
     {
-        private readonly IStatsUI _ui;
+        private readonly IStatsUI _statsUI;
 
-        public AnimalStatsUIRoot(IStatsUI ui, IAnimalWorldStats stats)
+        public AnimalStatsUIRoot(IStatsUI statsUI, IAnimalWorldStats stats)
         {
-            _ui = ui;
-            _ui.Init(stats);
+            _statsUI = statsUI;
+            _statsUI.Init(stats);
         }
     }
 }

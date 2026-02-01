@@ -1,14 +1,14 @@
 using System;
-using AnimalWorldRoot.Animal;
-using AnimalWorldRoot.AnimalsConfig;
-using AnimalWorldRoot.FoodChain;
-using AnimalWorldRoot.MovementStrategy;
+using AnimalWorld.Animal;
+using AnimalWorld.AnimalsConfig;
+using AnimalWorld.FoodChain;
+using AnimalWorld.MovementStrategy;
 using Modules.ScreenBounds;
 using UnityEngine;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
-namespace AnimalWorldRoot.Factory
+namespace AnimalWorld.Factory
 {
     public class AnimalFactory : IAnimalFactory
     {
@@ -23,7 +23,7 @@ namespace AnimalWorldRoot.Factory
 
         public IAnimal Create(AnimalConfig config)
         {
-            AnimalView view = Object.Instantiate(
+            AnimalMono animalObject = Object.Instantiate(
                 config.animalPrefab,
                 GetRandomSpawnPosition(),
                 Quaternion.identity,
@@ -32,10 +32,10 @@ namespace AnimalWorldRoot.Factory
 
             IMovementStrategy movement = config.movementType switch
             {
-                MovementType.Jump => new JumpMovement(view, config.jumpForce, config.speed, _screenBounds),
+                MovementType.Jump => new JumpMovement(animalObject, config.jumpForce, config.speed, _screenBounds),
 
                 MovementType.Linear => new LinearMovement(
-                    view,
+                    animalObject,
                     Vector3.forward,
                     config.speed,
                     config.directionChangeInterval,
@@ -52,8 +52,10 @@ namespace AnimalWorldRoot.Factory
                 _ => throw new ArgumentOutOfRangeException()
             };
 
-            view.Init(config.animalType, movement, foodChain);
-            return view;
+            var collisionResolver = new Resolver.CollisionResolver(animalObject, foodChain);
+
+            animalObject.Init(config.animalType, movement, foodChain);
+            return animalObject;
         }
 
         private Vector3 GetRandomSpawnPosition()
@@ -61,7 +63,7 @@ namespace AnimalWorldRoot.Factory
             return new Vector3(
                 Random.Range(minInclusive: -5f, maxInclusive: 5f),
                 y: 0f,
-                Random.Range(minInclusive: -5f, maxInclusive: 5f)
+                Random.Range(minInclusive: -5f, maxInclusive: 5f) // TODO: Config
             );
         }
     }

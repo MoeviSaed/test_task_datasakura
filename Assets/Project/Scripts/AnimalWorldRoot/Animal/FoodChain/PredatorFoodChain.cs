@@ -1,31 +1,27 @@
-using AnimalWorldRoot.Animal;
-using AnimalWorldRoot.AnimalsConfig;
+using AnimalWorld.Animal;
+using AnimalWorld.AnimalsConfig;
+using AnimalWorld.Resolver;
 
-namespace AnimalWorldRoot.FoodChain
+namespace AnimalWorld.FoodChain
 {
     public class PredatorFoodChain : IFoodChainBehaviour
     {
-        public FoodChainResult OnCollide(IAnimal self, IAnimal other)
+        public ICollisionCommand Resolve(IAnimal self, IAnimal other)
         {
-            if (other == null)
-            {
-                return FoodChainResult.Ignore;
-            }
-
             if (self.type == AnimalType.Predator
              && other.type == AnimalType.Predator)
             {
                 return self.GetHashCode() < other.GetHashCode()
-                    ? FoodChainResult.Die
-                    : FoodChainResult.Ignore;
+                    ? new DieCommand()
+                    : IgnoreCommand.Instance;
             }
 
             if (other.type == AnimalType.Prey)
             {
-                return FoodChainResult.EatOther;
+                return new EatOtherCommand(other);
             }
 
-            return FoodChainResult.Ignore;
+            return IgnoreCommand.Instance;
         }
     }
 }

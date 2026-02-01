@@ -1,8 +1,6 @@
 using System;
-using System.Collections.Generic;
-using AnimalWorldRoot.AnimalsConfig;
 
-namespace AnimalWorldRoot.Statistics
+namespace AnimalWorld.Statistics
 {
     public interface IAnimalWorldStats
     {
@@ -10,6 +8,5 @@ namespace AnimalWorldRoot.Statistics
 
         int DeadPreyCount { get; }
         int DeadPredatorCount { get; }
-        IReadOnlyDictionary<AnimalType, int> countByType { get; }
     }
 }

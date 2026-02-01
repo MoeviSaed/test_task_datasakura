@@ -1,8 +1,8 @@
-using AnimalWorldRoot.Animal;
+using AnimalWorld.Animal;
 using Modules.ScreenBounds;
 using UnityEngine;
 
-namespace AnimalWorldRoot.MovementStrategy
+namespace AnimalWorld.MovementStrategy
 {
     public class LinearMovement : IMovementStrategy
     {
@@ -11,14 +11,14 @@ namespace AnimalWorldRoot.MovementStrategy
         private readonly IScreenBounds _bounds;
         private readonly float _directionChangeInterval;
 
-        private Vector3 _direction;
+        private Vector3 _startDirection;
         private float _directionTimer;
 
         public LinearMovement(IMovementView view, Vector3 direction, float speed, float directionChangeInterval,
             IScreenBounds bounds)
         {
             _view = view;
-            _direction = direction.normalized;
+            _startDirection = direction.normalized;
             _speed = speed;
             _bounds = bounds;
             _directionChangeInterval = directionChangeInterval;
@@ -34,16 +34,16 @@ namespace AnimalWorldRoot.MovementStrategy
                 _directionTimer = _directionChangeInterval;
             }
 
-            Vector3 nextPosition = _view.rigidbodyPosition + _direction * _speed * deltaTime;
+            Vector3 nextPosition = _view.rigidbody.position + _startDirection * _speed * deltaTime;
 
             if (_bounds.IsOutOfBounds(nextPosition))
             {
-                _direction = _bounds.GetReturnDirection(nextPosition);
+                _startDirection = _bounds.GetReturnDirection(nextPosition);
                 _directionTimer = _directionChangeInterval; // сброс, чтобы не дергалось
-                nextPosition = _view.rigidbodyPosition + _direction * _speed * deltaTime;
+                nextPosition = _view.rigidbody.position + _startDirection * _speed * deltaTime;
             }
 
-            _view.rigidbodyPosition = nextPosition;
+            _view.rigidbody.position = nextPosition;
         }
 
         private void ChangeDirection()
@@ -53,10 +53,10 @@ namespace AnimalWorldRoot.MovementStrategy
 
             if (newDir.sqrMagnitude < 0.01f)
             {
-                newDir = _direction;
+                newDir = _startDirection;
             }
 
-            _direction = newDir.normalized;
+            _startDirection = newDir.normalized;
         }
     }
 }

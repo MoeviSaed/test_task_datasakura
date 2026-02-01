@@ -1,5 +1,4 @@
-using AnimalWorldRoot.AnimalsConfig;
-using AnimalWorldRoot.Statistics;
+using AnimalWorld.AnimalsConfig;
 using Modules.ScreenBounds;
 using UIRoot.Statistics;
 using UnityEngine;
@@ -8,17 +7,12 @@ namespace Project
 {
     // Почему Zeject / VContainer не использовались:
     // Для этого тестового задания использование стороннего DI избыточно.
-    // Архитектура через Root-классы и GameContext обеспечивает гибкость и расширяемость
+    // Архитектура через Root-классы обеспечивает гибкость и расширяемость
     // без привязки к конкретной библиотеке.
     // Все зависимости инициализируются явно, что облегчает понимание кода и тестирование.
-    
-    // Добавление новых типов животных
-    // Просто расширяешь AnimalType enum и добавляешь соответствующие классы животных.
-    //     Статистика автоматически поддерживает новые типы через словари или событие смерти.
-    
+
     public class GameBootstrap : MonoBehaviour
     {
-        private IAnimalWorldStats _animalWorldStats => _animalWorldRoot.animalWorldStats;
         [SerializeField] private Camera _camera;
         [SerializeField] private AnimalsConfig _animalsConfig;
         [SerializeField] private Transform _animalsRoot;
@@ -28,22 +22,24 @@ namespace Project
         [Header("UI")]
         [SerializeField] private AnimalStatsUI _animalStatsUI;
 
-        private AnimalStatsUIRoot _animalStatsUIRoot;
-        private AnimalWorldRoot.AnimalWorldRoot _animalWorldRoot;
+        private AnimalWorld.Root _animalWorldRoot;
 
         private void Awake()
         {
             var screenBoundsRoot = new ScreenBoundsRoot(_camera);
 
-            _animalWorldRoot = new AnimalWorldRoot.AnimalWorldRoot(
-                _animalsConfig,
-                _animalsRoot,
-                screenBoundsRoot.screenBounds,
-                _spawnIntervalMin,
-                _spawnIntervalMax
+            _animalWorldRoot = new AnimalWorld.Root(
+                new AnimalWorld.Root.Context
+                {
+                    animalsConfig = _animalsConfig,
+                    animalsRoot = _animalsRoot,
+                    screenBounds = screenBoundsRoot.screenBounds,
+                    spawnIntervalMin = _spawnIntervalMin,
+                    spawnIntervalMax = _spawnIntervalMax
+                }
             );
 
-            _animalStatsUIRoot = new AnimalStatsUIRoot(_animalStatsUI, _animalWorldStats);
+            var animalStatsUIRoot = new AnimalStatsUIRoot(_animalStatsUI, _animalWorldRoot.animalWorldStats);
         }
 
         private void FixedUpdate()
